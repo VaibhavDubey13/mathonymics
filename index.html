@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mathonymics — Math. Anonymously. Everywhere.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #070709;
+      --surface: #0e0e14;
+      --surface2: #13131c;
+      --border: rgba(255,255,255,0.07);
+      --purple-core: #9b5de5;
+      --purple-dim: #6b3fa0;
+      --purple-glow: rgba(155, 93, 229, 0.18);
+      --purple-faint: rgba(155, 93, 229, 0.06);
+      --text: #e8e8f0;
+      --text-muted: #7a7a9a;
+      --text-dim: #4a4a6a;
+      --accent: #c084fc;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom cursor */
+    .cursor {
+      position: fixed;
+      width: 10px; height: 10px;
+      background: var(--purple-core);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.08s ease, width 0.2s, height 0.2s, background 0.2s;
+      mix-blend-mode: screen;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(155,93,229,0.5);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.18s ease, width 0.2s, height 0.2s;
+    }
+    body:hover .cursor { opacity: 1; }
+
+    /* Noise overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    /* Ambient glow blobs */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .blob-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(155,93,229,0.12) 0%, transparent 70%);
+      top: -200px; right: -100px;
+      animation: blobFloat 12s ease-in-out infinite alternate;
+    }
+    .blob-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(107,63,160,0.1) 0%, transparent 70%);
+      bottom: 10%; left: -100px;
+      animation: blobFloat 16s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes blobFloat {
+      from { transform: translate(0, 0) scale(1); }
+      to { transform: translate(30px, 20px) scale(1.05); }
+    }
+
+    /* Nav */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: rgba(7,7,9,0.8);
+      backdrop-filter: blur(20px);
+    }
+
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      padding: 8px 20px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+      text-decoration: none;
+      background: var(--surface);
+      transition: all 0.2s;
+    }
+    .nav-cta:hover {
+      border-color: var(--purple-core);
+      color: var(--accent);
+      background: var(--purple-faint);
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 40px 80px;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--purple-core);
+      margin-bottom: 32px;
+      padding: 6px 16px;
+      border: 1px solid rgba(155,93,229,0.3);
+      border-radius: 100px;
+      background: rgba(155,93,229,0.05);
+      animation: fadeSlideUp 0.8s ease forwards;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--purple-core);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .hero-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(52px, 9vw, 110px);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      margin-bottom: 28px;
+      animation: fadeSlideUp 0.8s 0.1s ease both;
+    }
+
+    .hero-title .line-1 { color: var(--text); display: block; }
+    .hero-title .line-2 {
+      display: block;
+      background: linear-gradient(135deg, var(--purple-core) 0%, var(--accent) 50%, #e879f9 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      max-width: 520px;
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.8;
+      margin-bottom: 48px;
+      animation: fadeSlideUp 0.8s 0.2s ease both;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeSlideUp 0.8s 0.3s ease both;
+    }
+
+    .btn-primary {
+      padding: 14px 32px;
+      background: linear-gradient(135deg, var(--purple-dim), var(--purple-core));
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      text-decoration: none;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1));
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .btn-primary:hover::after { opacity: 1; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(155,93,229,0.3); }
+
+    .btn-ghost {
+      padding: 14px 32px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      text-decoration: none;
+      transition: all 0.25s;
+    }
+    .btn-ghost:hover {
+      border-color: var(--purple-core);
+      color: var(--accent);
+      background: var(--purple-faint);
+      transform: translateY(-2px);
+    }
+
+    /* Scroll indicator */
+    .scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      animation: fadeSlideUp 1s 0.8s ease both;
+    }
+    .scroll-hint span {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--purple-core), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0% { transform: scaleY(0); transform-origin: top; }
+      50% { transform: scaleY(1); transform-origin: top; }
+      51% { transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    /* Stats row */
+    .stats-row {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .stat-item {
+      padding: 28px 48px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+      flex: 1;
+      max-width: 220px;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+
+    /* Sections */
+    section {
+      position: relative;
+      z-index: 1;
+      padding: 80px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--purple-core);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: clamp(28px, 4vw, 44px);
+      letter-spacing: -0.03em;
+      color: var(--text);
+      margin-bottom: 48px;
+      line-height: 1.1;
+    }
+
+    /* Projects grid */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .project-card {
+      background: var(--surface);
+      padding: 36px;
+      position: relative;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.25s;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--purple-faint) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .project-card:hover::before { opacity: 1; }
+    .project-card:hover { background: var(--surface2); }
+
+    .project-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--purple-core), transparent);
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+    }
+    .project-card:hover::after { transform: scaleX(1); }
+
+    .card-tag {
+      display: inline-block;
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--purple-core);
+      background: rgba(155,93,229,0.1);
+      border: 1px solid rgba(155,93,229,0.2);
+      padding: 3px 10px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+      width: fit-content;
+    }
+
+    .card-icon {
+      font-size: 32px;
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--text);
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .card-desc {
+      color: var(--text-muted);
+      font-size: 13px;
+      line-height: 1.7;
+      flex: 1;
+    }
+
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 24px;
+      font-size: 12px;
+      color: var(--purple-core);
+      transition: gap 0.2s, color 0.2s;
+    }
+    .project-card:hover .card-link {
+      gap: 10px;
+      color: var(--accent);
+    }
+
+    /* Social links grid */
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .social-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .social-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--purple-faint), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .social-card:hover::before { opacity: 1; }
+    .social-card:hover {
+      border-color: rgba(155,93,229,0.3);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(155,93,229,0.12);
+    }
+
+    .social-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      background: var(--surface2);
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .social-info { position: relative; z-index: 1; }
+    .social-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--text);
+    }
+    .social-handle {
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+    .social-arrow {
+      margin-left: auto;
+      color: var(--text-dim);
+      transition: transform 0.2s, color 0.2s;
+      position: relative;
+      z-index: 1;
+    }
+    .social-card:hover .social-arrow {
+      transform: translate(3px, -3px);
+      color: var(--accent);
+    }
+
+    /* Highlight cards (Twitter/writing snippets) */
+    .highlights-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    .highlight-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.25s;
+    }
+    .highlight-card:hover {
+      border-color: rgba(155,93,229,0.25);
+      box-shadow: 0 4px 30px rgba(155,93,229,0.08), inset 0 0 0 1px rgba(155,93,229,0.1);
+      transform: translateY(-2px);
+    }
+
+    .highlight-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--purple-dim), var(--purple-core), var(--accent));
+      opacity: 0.6;
+    }
+
+    .highlight-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .highlight-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple-dim), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    .highlight-author {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text);
+    }
+    .highlight-time {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-left: auto;
+    }
+
+    .highlight-text {
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--text-muted);
+    }
+
+    .highlight-text strong {
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    .highlight-tag {
+      display: inline-block;
+      margin-top: 16px;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--purple-core);
+      padding: 2px 8px;
+      background: rgba(155,93,229,0.1);
+      border-radius: 4px;
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin: 0 40px;
+    }
+
+    /* Footer */
+    footer {
+      position: relative;
+      z-index: 1;
+      padding: 48px 40px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 20px;
+      background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .footer-copy {
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+    .footer-links a {
+      font-size: 11px;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--accent); }
+
+    /* Animations */
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Grid line background */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(155,93,229,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(155,93,229,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 20%, transparent 80%);
+      pointer-events: none;
+    }
+
+    /* Marquee */
+    .marquee-wrap {
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      padding: 16px 0;
+      position: relative;
+      z-index: 1;
+    }
+    .marquee-track {
+      display: flex;
+      gap: 48px;
+      animation: marquee 20s linear infinite;
+      white-space: nowrap;
+    }
+    .marquee-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .marquee-dot {
+      width: 4px; height: 4px;
+      background: var(--purple-core);
+      border-radius: 50%;
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      section { padding: 60px 20px; }
+      .stats-row { flex-wrap: wrap; }
+      .stat-item { max-width: 50%; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- Ambient blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-logo">Mathonymics</div>
+    <ul class="nav-links">
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#writing">Writing</a></li>
+      <li><a href="#connect">Connect</a></li>
+    </ul>
+    <a href="https://x.com/Mathonymics" target="_blank" rel="noopener" class="nav-cta">@Mathonymics →</a>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-eyebrow">Math. Anonymously. Everywhere.</div>
+    <h1 class="hero-title">
+      <span class="line-1">Exploring the</span>
+      <span class="line-2">Hidden Math</span>
+    </h1>
+    <p class="hero-sub">
+      A creative space at the intersection of mathematics, technology & ideas. 
+      Projects, essays, and experiments — all under one domain.
+    </p>
+    <div class="hero-ctas">
+      <a href="#projects" class="btn-primary">Explore Projects</a>
+      <a href="#writing" class="btn-ghost">Read the Writing</a>
+    </div>
+
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </div>
+
+  <!-- Stats row -->
+  <div class="stats-row">
+    <div class="stat-item">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Ideas in progress</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">6+</div>
+      <div class="stat-label">Platforms</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">01</div>
+      <div class="stat-label">Domain to rule them all</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">∂</div>
+      <div class="stat-label">Always learning</div>
+    </div>
+  </div>
+
+  <!-- Marquee -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span class="marquee-item"><span class="marquee-dot"></span> Mathematics</span>
+      <span class="marquee-item"><span class="marquee-dot"></span> Game Development</span>
+      <span class="marquee-item"><span class="marquee-dot"></span> Long-form Writing</span>
+      <span class="marquee-item"><span class="marquee-dot"></span> Open Source</span>
+      <span class="marquee-item"><span class="marquee-dot"></span> YouTube Content</span>
+      <span class="marquee-item"><span class="marquee-dot"></span> Threads & Talks</span>
+      <span class="marquee-item"><span class="marquee-dot"></span> mathonymics.in</span>
+      <span class="marquee-item"><span class="marquee-dot"></span> Mathematics</span>
+      <span class="marquee-item"><span class="marquee-dot"></span> Game Development</span>
+      <span class="marquee-item"><span class="marquee-dot"></span> Long-form Writing</span>
+      <span class="marquee-item"><span class="marquee-dot"></span> Open Source</span>
+      <span class="marquee-item"><span class="marquee-dot"></span> YouTube Content</span>
+      <span class="marquee-item"><span class="marquee-dot"></span> Threads & Talks</span>
+      <span class="marquee-item"><span class="marquee-dot"></span> mathonymics.in</span>
+    </div>
+  </div>
+
+  <!-- Projects section -->
+  <section id="projects">
+    <div class="section-label fade-in">// Featured work</div>
+    <h2 class="section-title fade-in">Projects I'm building</h2>
+
+    <div class="projects-grid fade-in">
+      <a href="https://alien-escape-psi.vercel.app/" target="_blank" rel="noopener" class="project-card">
+        <span class="card-tag">Game · Live</span>
+        <div class="card-icon">👾</div>
+        <div class="card-title">Alien Escape</div>
+        <div class="card-desc">
+          A web-based escape experience with procedural elements. Navigate through challenges as you outrun an alien pursuit. Built and deployed on Vercel.
+        </div>
+        <span class="card-link">Play now →</span>
+      </a>
+
+      <div class="project-card" style="cursor:default;">
+        <span class="card-tag">Math · In Progress</span>
+        <div class="card-icon">🔢</div>
+        <div class="card-title">Math Visualizer</div>
+        <div class="card-desc">
+          Interactive visualizations making complex mathematical concepts tangible. From topology to number theory — math the way it should be explored.
+        </div>
+        <span class="card-link" style="color:var(--text-dim);">Coming soon —</span>
+      </div>
+
+      <div class="project-card" style="cursor:default;">
+        <span class="card-tag">Tool · Incubating</span>
+        <div class="card-icon">🧮</div>
+        <div class="card-title">Next Project</div>
+        <div class="card-desc">
+          Something is brewing. Ideas don't wait — they compound. Follow along on X or YouTube to catch the first drop when it's ready.
+        </div>
+        <span class="card-link" style="color:var(--text-dim);">Watch this space —</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Writing / Highlights section -->
+  <section id="writing">
+    <div class="section-label fade-in">// From the feed</div>
+    <h2 class="section-title fade-in">Ideas I'm writing about</h2>
+
+    <div class="highlights-grid fade-in">
+
+      <div class="highlight-card">
+        <div class="highlight-meta">
+          <div class="highlight-avatar">M</div>
+          <div>
+            <div class="highlight-author">Mathonymics</div>
+            <div class="highlight-time" style="color:var(--text-dim);font-size:11px;">@Mathonymics · X</div>
+          </div>
+          <div class="highlight-time">Recent</div>
+        </div>
+        <div class="highlight-text">
+          Most people think math is about <strong>numbers</strong>. It's actually about patterns — and patterns are the language the universe writes itself in. Every game mechanic, every algorithm, every beautiful coincidence traces back to structure.
+        </div>
+        <span class="highlight-tag">Philosophy of Math</span>
+      </div>
+
+      <div class="highlight-card">
+        <div class="highlight-meta">
+          <div class="highlight-avatar">M</div>
+          <div>
+            <div class="highlight-author">Mathonymics</div>
+            <div class="highlight-time" style="color:var(--text-dim);font-size:11px;">@Mathonymics · Medium</div>
+          </div>
+          <div class="highlight-time">Essay</div>
+        </div>
+        <div class="highlight-text">
+          Game design is <strong>applied mathematics in disguise</strong>. Probability curves balance loot tables. Graph theory shapes level design. Calculus optimizes difficulty ramps. Build anything interactive — you're doing math whether you know it or not.
+        </div>
+        <span class="highlight-tag">Game Dev × Math</span>
+      </div>
+
+      <div class="highlight-card">
+        <div class="highlight-meta">
+          <div class="highlight-avatar">M</div>
+          <div>
+            <div class="highlight-author">Mathonymics</div>
+            <div class="highlight-time" style="color:var(--text-dim);font-size:11px;">@Mathonymics · Threads</div>
+          </div>
+          <div class="highlight-time">Thread</div>
+        </div>
+        <div class="highlight-text">
+          Why do smart people avoid math? Because we teach arithmetic and call it mathematics. Counting isn't math. <strong>Reasoning is math.</strong> We've been selling the wrapper, not the gift. The real thing is beautiful — and almost no one has seen it.
+        </div>
+        <span class="highlight-tag">Education</span>
+      </div>
+
+      <div class="highlight-card">
+        <div class="highlight-meta">
+          <div class="highlight-avatar">M</div>
+          <div>
+            <div class="highlight-author">Mathonymics</div>
+            <div class="highlight-time" style="color:var(--text-dim);font-size:11px;">@Mathonymics · YouTube</div>
+          </div>
+          <div class="highlight-time">Video</div>
+        </div>
+        <div class="highlight-text">
+          There's a reason <strong>symmetry feels beautiful</strong> to every culture on earth. It's not arbitrary taste. It's your brain detecting mathematical invariance — and interpreting it as rightness. Aesthetics and mathematics are the same signal.
+        </div>
+        <span class="highlight-tag">Symmetry & Beauty</span>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Social / Connect section -->
+  <section id="connect">
+    <div class="section-label fade-in">// Find me on</div>
+    <h2 class="section-title fade-in">Every corner of the internet</h2>
+
+    <div class="social-grid fade-in">
+
+      <a href="https://x.com/Mathonymics" target="_blank" rel="noopener" class="social-card">
+        <div class="social-icon">𝕏</div>
+        <div class="social-info">
+          <div class="social-name">X / Twitter</div>
+          <div class="social-handle">@Mathonymics</div>
+        </div>
+        <div class="social-arrow">↗</div>
+      </a>
+
+      <a href="https://www.youtube.com/@mathonymics/featured" target="_blank" rel="noopener" class="social-card">
+        <div class="social-icon">▶</div>
+        <div class="social-info">
+          <div class="social-name">YouTube</div>
+          <div class="social-handle">@Mathonymics</div>
+        </div>
+        <div class="social-arrow">↗</div>
+      </a>
+
+      <a href="https://medium.com/@mathonymics" target="_blank" rel="noopener" class="social-card">
+        <div class="social-icon">M</div>
+        <div class="social-info">
+          <div class="social-name">Medium</div>
+          <div class="social-handle">@mathonymics</div>
+        </div>
+        <div class="social-arrow">↗</div>
+      </a>
+
+      <a href="https://www.threads.com/@mathonymics" target="_blank" rel="noopener" class="social-card">
+        <div class="social-icon">@</div>
+        <div class="social-info">
+          <div class="social-name">Threads</div>
+          <div class="social-handle">@mathonymics</div>
+        </div>
+        <div class="social-arrow">↗</div>
+      </a>
+
+      <a href="https://www.instagram.com/mathonymics/" target="_blank" rel="noopener" class="social-card">
+        <div class="social-icon">◈</div>
+        <div class="social-info">
+          <div class="social-name">Instagram</div>
+          <div class="social-handle">@mathonymics</div>
+        </div>
+        <div class="social-arrow">↗</div>
+      </a>
+
+      <a href="https://alien-escape-psi.vercel.app/" target="_blank" rel="noopener" class="social-card">
+        <div class="social-icon">⬡</div>
+        <div class="social-info">
+          <div class="social-name">Alien Escape</div>
+          <div class="social-handle">Project · Live</div>
+        </div>
+        <div class="social-arrow">↗</div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-logo">Mathonymics</div>
+    <div class="footer-copy">© 2025 mathonymics.in — All ideas reserved.</div>
+    <div class="footer-links">
+      <a href="https://x.com/Mathonymics" target="_blank" rel="noopener">Twitter</a>
+      <a href="https://medium.com/@mathonymics" target="_blank" rel="noopener">Medium</a>
+      <a href="https://alien-escape-psi.vercel.app/" target="_blank" rel="noopener">Projects</a>
+    </div>
+  </footer>
+
+  <script>
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx + 'px';
+      cursor.style.top = my + 'px';
+    });
+
+    (function animRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top = ry + 'px';
+      requestAnimationFrame(animRing);
+    })();
+
+    document.querySelectorAll('a, button, .project-card, .social-card, .highlight-card').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.width = '16px';
+        cursor.style.height = '16px';
+        ring.style.width = '56px';
+        ring.style.height = '56px';
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.style.width = '10px';
+        cursor.style.height = '10px';
+        ring.style.width = '36px';
+        ring.style.height = '36px';
+      });
+    });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Stagger child fade-ins
+    document.querySelectorAll('.projects-grid, .social-grid, .highlights-grid').forEach(grid => {
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.querySelectorAll('.project-card, .social-card, .highlight-card').forEach((card, i) => {
+              card.style.opacity = '0';
+              card.style.transform = 'translateY(20px)';
+              card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+              setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+              }, i * 100);
+            });
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.05 });
+      obs.observe(grid);
+    });
+  </script>
+
+</body>
+</html>
