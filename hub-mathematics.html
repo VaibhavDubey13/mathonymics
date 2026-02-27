@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>∫ Mathematics — Mathonymics</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{--black:#000;--bg:#03030a;--bg2:#07070f;--s1:rgba(255,255,255,.03);--border:rgba(255,255,255,.07);--borderp:rgba(168,85,247,.25);--p1:#7e22ce;--p2:#a855f7;--p3:#c084fc;--pg:rgba(168,85,247,.12);--text:#f0eeff;--text2:rgba(240,238,255,.55);--text3:rgba(240,238,255,.25);--mono:'Fira Code',monospace;--disp:'Syne',sans-serif;--ease:cubic-bezier(.16,1,.3,1)}
+body{background:var(--black);color:var(--text);font-family:var(--mono);font-size:13px;line-height:1.75;overflow-x:hidden;cursor:none}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--p1);border-radius:2px}
+#ambientCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+.vig{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 80% 80% at 50% 50%,transparent 45%,rgba(0,0,0,.75) 100%)}
+#progress{position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,var(--p1),var(--p3),#e879f9);z-index:9999;box-shadow:0 0 10px var(--p2)}
+#cdot{position:fixed;width:6px;height:6px;background:var(--p3);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);box-shadow:0 0 8px var(--p2),0 0 20px rgba(168,85,247,.4);transition:width .15s,height .15s}
+#cring{position:fixed;width:28px;height:28px;border:1px solid rgba(168,85,247,.35);border-radius:50%;pointer-events:none;z-index:9997;transform:translate(-50%,-50%)}
+#cring::before,#cring::after{content:'';position:absolute;background:rgba(168,85,247,.3)}
+#cring::before{width:1px;height:6px;left:50%;top:-10px;transform:translateX(-50%)}
+#cring::after{width:6px;height:1px;top:50%;left:-10px;transform:translateY(-50%)}
+body.ch #cdot{width:12px;height:12px}body.ch #cring{width:48px;height:48px;border-color:rgba(168,85,247,.6)}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:.018;pointer-events:none;z-index:998}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:0 48px;height:62px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:rgba(0,0,0,.55);backdrop-filter:blur(28px)}
+.nl{font-family:var(--disp);font-weight:800;font-size:15px;letter-spacing:-.04em;color:var(--text);text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.nldot{width:5px;height:5px;background:var(--p2);border-radius:50%;box-shadow:0 0 8px var(--p2)}
+.nav-right{display:flex;gap:12px;align-items:center}
+.nav-back{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--text2);border:1px solid var(--border);padding:5px 12px;border-radius:100px;text-decoration:none;transition:all .25s}
+.nav-back:hover{border-color:var(--borderp);color:var(--p3)}
+.hub-badge{font-size:12px;color:var(--p3);background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.2);padding:4px 14px;border-radius:100px;letter-spacing:.08em}
+/* HUB HERO */
+.hub-hero{position:relative;z-index:2;min-height:55vh;display:flex;align-items:center;padding:120px 48px 60px;max-width:1100px;margin:0 auto}
+.hub-sym{font-size:clamp(80px,14vw,160px);color:rgba(168,85,247,.08);position:absolute;right:48px;top:50%;transform:translateY(-50%);line-height:1;pointer-events:none;filter:blur(.5px)}
+.hub-eyebrow{font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--p2);margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.hub-eyebrow::before{content:'';width:24px;height:1px;background:var(--p2)}
+.hub-title{font-family:var(--disp);font-weight:800;font-size:clamp(42px,7vw,80px);line-height:.97;letter-spacing:-.045em;margin-bottom:20px}
+.hub-title span{background:linear-gradient(125deg,#c084fc 0%,#a855f7 45%,#6d28d9 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hub-desc{font-size:14px;color:var(--text2);max-width:520px;line-height:1.85}
+/* SECTION */
+.sw{position:relative;z-index:2;max-width:1100px;margin:0 auto;padding:72px 48px}
+.dline{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)}
+.sl{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--p2);margin-bottom:12px;display:flex;align-items:center;gap:9px}
+.sl::before{content:'';display:inline-block;width:18px;height:1px;background:var(--p2)}
+.st{font-family:var(--disp);font-weight:800;font-size:clamp(24px,3.5vw,38px);letter-spacing:-.04em;line-height:1.1;margin-bottom:36px}
+/* ESSAY CARDS */
+.essay-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.essay-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:28px;position:relative;overflow:hidden;transition:all .3s var(--ease);cursor:none;text-decoration:none;color:inherit;display:block}
+.essay-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(168,85,247,.4),transparent);opacity:0;transition:opacity .3s}
+.essay-card:hover{border-color:rgba(168,85,247,.2);background:rgba(168,85,247,.025);transform:translateY(-3px);box-shadow:0 10px 32px rgba(0,0,0,.5)}
+.essay-card:hover::before{opacity:1}
+.ec-tag{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--p2);margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.ec-dot{width:4px;height:4px;background:var(--p2);border-radius:50%;box-shadow:0 0 4px var(--p2)}
+.ec-title{font-family:var(--disp);font-weight:700;font-size:18px;color:var(--text);letter-spacing:-.02em;margin-bottom:10px;line-height:1.3}
+.ec-body{font-size:12px;color:var(--text2);line-height:1.85}
+.ec-math{font-family:var(--mono);font-size:13px;color:var(--p3);background:rgba(168,85,247,.06);border:1px solid rgba(168,85,247,.1);border-radius:8px;padding:12px 16px;margin:14px 0;letter-spacing:.04em}
+.ec-read{display:inline-flex;align-items:center;gap:6px;margin-top:18px;font-size:11px;color:var(--p2);transition:gap .2s,color .2s}
+.essay-card:hover .ec-read{gap:10px;color:var(--p3)}
+/* EXTENDED SANDBOX */
+.pgwrap{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);position:relative;z-index:2;overflow:hidden}
+.pgwrap::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 50% 50%,rgba(126,34,206,.055),transparent);pointer-events:none}
+.pwin{max-width:1100px;margin:0 auto;padding:72px 48px}
+.pgtabs{display:flex;gap:2px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:4px;margin-bottom:24px;flex-wrap:wrap}
+.pgtab{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--text2);padding:9px 14px;border-radius:9px;border:none;background:transparent;cursor:none;transition:all .25s;white-space:nowrap}
+.pgtab.act{background:rgba(168,85,247,.15);color:var(--p3);box-shadow:0 0 12px rgba(168,85,247,.1)}
+.pgtab:hover:not(.act){color:var(--text);background:rgba(255,255,255,.03)}
+.pgcw{position:relative;border:1px solid var(--borderp);border-radius:14px;overflow:hidden;background:#000}
+.pgcw canvas{display:block;width:100%!important}
+.pgov{position:absolute;top:12px;right:12px;z-index:10}
+.pghint{font-size:9px;letter-spacing:.12em;color:var(--text3);text-transform:uppercase;background:rgba(0,0,0,.6);border:1px solid var(--border);padding:4px 10px;border-radius:6px;backdrop-filter:blur(8px)}
+.pgctrl{display:flex;gap:14px;margin-top:14px;flex-wrap:wrap;align-items:center}
+.pgcl{font-size:10px;color:var(--text2)}
+.pgsl{-webkit-appearance:none;width:120px;height:2px;background:rgba(168,85,247,.2);border-radius:2px;outline:none;cursor:none}
+.pgsl::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;background:var(--p2);border-radius:50%;cursor:none;box-shadow:0 0 8px var(--p2)}
+.pgbtn{font-family:var(--mono);font-size:10px;color:var(--p3);background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.2);border-radius:6px;padding:6px 14px;cursor:none;transition:all .2s}
+.pgbtn:hover{background:rgba(168,85,247,.15);border-color:rgba(168,85,247,.4)}
+/* FOOTER */
+.hub-footer{position:relative;z-index:2;border-top:1px solid var(--border);padding:28px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;background:rgba(0,0,0,.4)}
+.hfl{font-family:var(--disp);font-weight:800;font-size:13px;letter-spacing:-.03em;color:var(--text3)}
+.hfl a{color:inherit;text-decoration:none;transition:color .2s}.hfl a:hover{color:var(--p3)}
+/* ANIM */
+@keyframes rup{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+.rev{opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease),transform .8s var(--ease)}.rev.vis{opacity:1;transform:translateY(0)}
+@media(max-width:900px){nav{padding:0 20px}.hub-hero{padding:100px 20px 48px}.sw{padding:52px 20px}.pwin{padding:52px 20px}.hub-footer{padding:24px 20px}}
+@media(max-width:600px){.essay-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<canvas id="ambientCanvas"></canvas>
+<div class="vig"></div>
+<div id="progress"></div>
+<div id="cdot"></div>
+<div id="cring"></div>
+
+<nav>
+  <a href="index.html" class="nl"><div class="nldot"></div>Mathonymics</a>
+  <div class="nav-right">
+    <span class="hub-badge">∫ Mathematics</span>
+    <a href="index.html" class="nav-back">← Back home</a>
+  </div>
+</nav>
+
+<div class="hub-hero">
+  <div class="hub-sym">∫</div>
+  <div>
+    <div class="hub-eyebrow">Dimension 01</div>
+    <h1 class="hub-title"><span>Mathematics</span></h1>
+    <p class="hub-desc">Explorations into the deep structure of things. Essays on why mathematics is not arithmetic, interactive proofs, and the beauty hiding in abstraction.</p>
+  </div>
+</div>
+
+<div class="dline"></div>
+<div class="sw">
+  <div class="sl rev">Essays &amp; Explorations</div>
+  <h2 class="st rev">Written patterns</h2>
+  <div class="essay-grid">
+    <div class="essay-card rev">
+      <div class="ec-tag"><div class="ec-dot"></div>Philosophy</div>
+      <h3 class="ec-title">What Mathematics Actually Is</h3>
+      <p class="ec-body">Most curricula conflate calculation with mathematics. The distinction matters enormously. Real math is the study of structure, pattern, and logical necessity — not arithmetic.</p>
+      <div class="ec-math">structure : pattern → truth</div>
+      <a href="https://medium.com/@mathonymics" target="_blank" rel="noopener" class="ec-read">Read on Medium ↗</a>
+    </div>
+    <div class="essay-card rev">
+      <div class="ec-tag"><div class="ec-dot"></div>Topology</div>
+      <h3 class="ec-title">Holes That Aren't Holes</h3>
+      <p class="ec-body">Topology studies properties that survive continuous deformation. A coffee mug and a donut are the same object to a topologist. Genus, Euler characteristics, and why shape is stranger than you thought.</p>
+      <div class="ec-math">χ = V − E + F = 2 − 2g</div>
+      <a href="https://medium.com/@mathonymics" target="_blank" rel="noopener" class="ec-read">Read on Medium ↗</a>
+    </div>
+    <div class="essay-card rev">
+      <div class="ec-tag"><div class="ec-dot"></div>Number Theory</div>
+      <h3 class="ec-title">The Prime Conspiracy</h3>
+      <p class="ec-body">Primes appear random but hide deep patterns. The Riemann Hypothesis, Euler's product formula, and the Ulam spiral all point to an order we've only glimpsed.</p>
+      <div class="ec-math">ζ(s) = Σ n⁻ˢ = Π (1−p⁻ˢ)⁻¹</div>
+      <a href="https://medium.com/@mathonymics" target="_blank" rel="noopener" class="ec-read">Read on Medium ↗</a>
+    </div>
+    <div class="essay-card rev">
+      <div class="ec-tag"><div class="ec-dot"></div>Analysis</div>
+      <h3 class="ec-title">Infinity Is Not a Number</h3>
+      <p class="ec-body">Cantor showed there are different sizes of infinity. The continuum hypothesis is both true and false depending on your axioms. This is not a bug — it's a window into the foundations of reality.</p>
+      <div class="ec-math">|ℕ| &lt; |ℝ| — Cantor's theorem</div>
+      <a href="https://medium.com/@mathonymics" target="_blank" rel="noopener" class="ec-read">Read on Medium ↗</a>
+    </div>
+    <div class="essay-card rev">
+      <div class="ec-tag"><div class="ec-dot"></div>Symmetry</div>
+      <h3 class="ec-title">Why Beauty Feels Like Truth</h3>
+      <p class="ec-body">Symmetry, group theory, and Noether's theorem connect aesthetic experience to physical law. Conservation of energy is a consequence of time-translation symmetry.</p>
+      <div class="ec-math">∂L/∂q − d/dt(∂L/∂q̇) = 0</div>
+      <a href="https://medium.com/@mathonymics" target="_blank" rel="noopener" class="ec-read">Read on Medium ↗</a>
+    </div>
+    <div class="essay-card rev">
+      <div class="ec-tag"><div class="ec-dot"></div>Fractals</div>
+      <h3 class="ec-title">Dimensions Between Dimensions</h3>
+      <p class="ec-body">A coastline has a dimension between 1 and 2. Fractal geometry formalises the roughness of nature — clouds, mountains, trees — with non-integer dimensional scaling.</p>
+      <div class="ec-math">D = lim log(N)/log(1/ε)</div>
+      <a href="https://medium.com/@mathonymics" target="_blank" rel="noopener" class="ec-read">Read on Medium ↗</a>
+    </div>
+  </div>
+</div>
+
+<div class="pgwrap">
+  <div class="pwin">
+    <div class="sl rev">Interactive</div>
+    <h2 class="st rev">Extended Sandbox</h2>
+    <p style="color:var(--text2);font-size:12px;margin-bottom:24px;max-width:500px">Explore mathematical structures directly. All demos are live — rendered in your browser.</p>
+    <div class="pgtabs" id="pgtabs">
+      <button class="pgtab act" data-tab="mb">Mandelbrot</button>
+      <button class="pgtab" data-tab="julia">Julia Set</button>
+      <button class="pgtab" data-tab="fr">Fourier Series</button>
+      <button class="pgtab" data-tab="ul">Ulam Spiral</button>
+      <button class="pgtab" data-tab="lorenz">Lorenz Attractor</button>
+    </div>
+    <div class="pgcw" id="pgcw">
+      <canvas id="pgc" width="1000" height="400"></canvas>
+      <div class="pgov"><div class="pghint" id="pghint">drag to pan · scroll to zoom</div></div>
+    </div>
+    <div class="pgctrl" id="pgctrl"></div>
+  </div>
+</div>
+
+<div class="hub-footer">
+  <span class="hfl"><a href="index.html">Mathonymics</a> / ∫ Mathematics</span>
+  <div style="display:flex;gap:20px">
+    <a href="hub-writing.html" style="font-size:10px;color:var(--text3);text-decoration:none;transition:color .2s" onmouseenter="this.style.color='var(--p3)'" onmouseleave="this.style.color='var(--text3)'">∂ Writing →</a>
+    <a href="hub-patterns.html" style="font-size:10px;color:var(--text3);text-decoration:none;transition:color .2s" onmouseenter="this.style.color='var(--p3)'" onmouseleave="this.style.color='var(--text3)'">∀ Patterns →</a>
+  </div>
+</div>
+
+<script>
+/* AMBIENT + CURSOR (shared mini version) */
+(()=>{
+  const cv=document.getElementById('ambientCanvas'),ctx=cv.getContext('2d');
+  const SYMS=['∂','∫','∑','∞','π','Δ','√','∀','∃','ζ','ε','δ','φ','ψ'];
+  let W,H,syms=[],mouse={x:0,y:0},t=0;
+  function resize(){W=cv.width=innerWidth;H=cv.height=innerHeight}
+  function Sym(){this.x=Math.random()*W;this.y=Math.random()*H;this.char=SYMS[Math.floor(Math.random()*SYMS.length)];this.sz=Math.random()*10+8;this.ba=Math.random()*.06+.02;this.a=this.ba;this.vx=(Math.random()-.5)*.15;this.vy=(Math.random()-.5)*.15;this.depth=Math.random()*.8+.2;this.pp=Math.random()*Math.PI*2;this.hue=270+Math.random()*35}
+  function init(){syms=[];const n=Math.min(Math.floor(W*H/15000),80);for(let i=0;i<n;i++)syms.push(new Sym())}
+  function loop(){requestAnimationFrame(loop);ctx.clearRect(0,0,W,H);t+=.01;syms.forEach(s=>{const px=(mouse.x-W/2)*s.depth*.01,py=(mouse.y-H/2)*s.depth*.01;s.x+=s.vx;s.y+=s.vy;s.a=s.ba*(.7+.3*Math.sin(t*s.pp*10));if(s.x<-40)s.x=W+20;if(s.x>W+40)s.x=-20;if(s.y<-40)s.y=H+20;if(s.y>H+40)s.y=-20;ctx.save();ctx.globalAlpha=s.a;ctx.fillStyle=`hsl(${s.hue},70%,70%)`;ctx.font=`${s.sz}px 'Fira Code',monospace`;ctx.fillText(s.char,s.x+px,s.y+py);ctx.restore()})}
+  window.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY},{passive:true});
+  window.addEventListener('resize',()=>{resize();init()},{passive:true});
+  resize();init();loop();
+})();
+/* CURSOR */
+(()=>{
+  const dot=document.getElementById('cdot'),ring=document.getElementById('cring');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY},{passive:true});
+  (function a(){dot.style.left=mx+'px';dot.style.top=my+'px';rx+=(mx-rx)*.13;ry+=(my-ry)*.13;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a)})();
+  document.querySelectorAll('a,button,.essay-card,.pgtab').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('ch'));el.addEventListener('mouseleave',()=>document.body.classList.remove('ch'))});
+})();
+/* PROGRESS */
+const pb=document.getElementById('progress');
+window.addEventListener('scroll',()=>{pb.style.width=(window.scrollY/(document.documentElement.scrollHeight-innerHeight)*100)+'%'},{passive:true});
+/* REVEAL */
+const ro=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('vis');ro.unobserve(x.target)}})},{threshold:.08});
+document.querySelectorAll('.rev').forEach(el=>ro.observe(el));
+const rg=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.querySelectorAll('.essay-card').forEach((c,i)=>{c.style.cssText=`opacity:0;transform:translateY(16px);transition:opacity .7s ${i*.09}s cubic-bezier(.16,1,.3,1),transform .7s ${i*.09}s cubic-bezier(.16,1,.3,1)`;requestAnimationFrame(()=>{c.style.opacity='1';c.style.transform='translateY(0)'})});rg.unobserve(x.target)}})},{threshold:.05});
+document.querySelectorAll('.essay-grid').forEach(el=>rg.observe(el));
+
+/* PLAYGROUND */
+(()=>{
+  const pgc=document.getElementById('pgc'),ctx=pgc.getContext('2d');
+  const pgcw=document.getElementById('pgcw'),pgctrl=document.getElementById('pgctrl'),pghint=document.getElementById('pghint');
+  let cur='mb',animId=null;
+  function resize(){const w=pgcw.clientWidth,h=Math.min(innerWidth<600?240:400,420);pgc.width=w;pgc.height=h}
+  document.getElementById('pgtabs').addEventListener('click',e=>{const t=e.target;if(!t.classList.contains('pgtab'))return;document.querySelectorAll('.pgtab').forEach(x=>x.classList.remove('act'));t.classList.add('act');cur=t.dataset.tab;stop();pgctrl.innerHTML='';resize();TABS[cur].init()});
+  function stop(){if(animId){cancelAnimationFrame(animId);animId=null}pgc.onmousedown=pgc.onmousemove=pgc.onmouseup=pgc.onwheel=null}
+  const MB={cx:-.5,cy:0,zoom:200,drag:false,lx:0,ly:0,iter:80,cm:0,
+    init(){pghint.textContent='drag to pan · scroll to zoom';pgctrl.innerHTML=`<label class="pgcl">Iterations</label><input type="range" class="pgsl" id="mbit" min="30" max="250" value="80"><button class="pgbtn" id="mbrs">Reset</button><button class="pgbtn" id="mbcl">Color</button><label class="pgcl">Escape</label><input type="range" class="pgsl" id="mbes" min="4" max="64" value="4">`;document.getElementById('mbit').oninput=e=>{MB.iter=+e.target.value;MB.draw()};document.getElementById('mbrs').onclick=()=>{MB.cx=-.5;MB.cy=0;MB.zoom=200;MB.draw()};document.getElementById('mbcl').onclick=()=>{MB.cm=(MB.cm+1)%4;MB.draw()};document.getElementById('mbes').oninput=()=>MB.draw();pgc.onmousedown=e=>{MB.drag=true;MB.lx=e.offsetX;MB.ly=e.offsetY};pgc.onmousemove=e=>{if(!MB.drag)return;MB.cx-=(e.offsetX-MB.lx)/MB.zoom;MB.cy-=(e.offsetY-MB.ly)/MB.zoom;MB.lx=e.offsetX;MB.ly=e.offsetY;MB.draw()};pgc.onmouseup=()=>MB.drag=false;pgc.onwheel=e=>{e.preventDefault();const f=e.deltaY>0?.82:1.22;const ox=(e.offsetX-pgc.width/2)/MB.zoom,oy=(e.offsetY-pgc.height/2)/MB.zoom;MB.zoom*=f;MB.cx+=ox*(1-f);MB.cy+=oy*(1-f);MB.draw()};MB.draw()},
+    draw(){const W=pgc.width,H=pgc.height,img=ctx.createImageData(W,H),d=img.data;const esc=+(document.getElementById('mbes')?.value||4);for(let py=0;py<H;py++)for(let px=0;px<W;px++){const ci=(py*W+px)*4,zr=(px-W/2)/MB.zoom+MB.cx,zi=(py-H/2)/MB.zoom+MB.cy;let zx=0,zy=0,n=0;while(zx*zx+zy*zy<esc*esc&&n<MB.iter){const t2=zx*zx-zy*zy+zr;zy=2*zx*zy+zi;zx=t2;n++}if(n===MB.iter){d[ci]=0;d[ci+1]=0;d[ci+2]=0;d[ci+3]=255}else{const t2=n/MB.iter;if(MB.cm===0){d[ci]=Math.floor(t2*126*1.8);d[ci+1]=Math.floor(t2*20);d[ci+2]=Math.floor(Math.sin(t2*Math.PI)*220)}else if(MB.cm===1){d[ci]=Math.floor(255*Math.min(1,t2*3));d[ci+1]=Math.floor(255*Math.max(0,t2*3-1));d[ci+2]=Math.floor(255*Math.max(0,t2*3-2))}else if(MB.cm===2){const v=Math.floor(t2*255);d[ci]=v/3;d[ci+1]=v/2;d[ci+2]=v}else{d[ci]=Math.floor(Math.sin(t2*Math.PI*6)*127+128);d[ci+1]=Math.floor(Math.sin(t2*Math.PI*4+2)*40+20);d[ci+2]=Math.floor(Math.sin(t2*Math.PI*3+1)*127+128)}d[ci+3]=255}}ctx.putImageData(img,0,0);const g=ctx.createRadialGradient(W/2,H/2,H*.15,W/2,H/2,H*.65);g.addColorStop(0,'transparent');g.addColorStop(1,'rgba(3,3,10,.55)');ctx.fillStyle=g;ctx.fillRect(0,0,W,H)}
+  };
+  const JULIA={cx:-.7,cy:.27,zoom:180,drag:false,lx:0,ly:0,iter:80,cr:-.7,ci:.27,
+    init(){pghint.textContent='drag to move · scroll to zoom · adjust C params';pgctrl.innerHTML=`<label class="pgcl">Re(c)</label><input type="range" class="pgsl" id="jcr" min="-200" max="200" value="-70"><label class="pgcl">Im(c)</label><input type="range" class="pgsl" id="jci" min="-200" max="200" value="27"><button class="pgbtn" id="jrs">Reset</button>`;document.getElementById('jcr').oninput=e=>{JULIA.cr=+e.target.value/100;JULIA.draw()};document.getElementById('jci').oninput=e=>{JULIA.ci=+e.target.value/100;JULIA.draw()};document.getElementById('jrs').onclick=()=>{JULIA.cx=0;JULIA.cy=0;JULIA.zoom=180;JULIA.cr=-.7;JULIA.ci=.27;document.getElementById('jcr').value=-70;document.getElementById('jci').value=27;JULIA.draw()};pgc.onmousedown=e=>{JULIA.drag=true;JULIA.lx=e.offsetX;JULIA.ly=e.offsetY};pgc.onmousemove=e=>{if(!JULIA.drag)return;JULIA.cx-=(e.offsetX-JULIA.lx)/JULIA.zoom;JULIA.cy-=(e.offsetY-JULIA.ly)/JULIA.zoom;JULIA.lx=e.offsetX;JULIA.ly=e.offsetY;JULIA.draw()};pgc.onmouseup=()=>JULIA.drag=false;pgc.onwheel=e=>{e.preventDefault();const f=e.deltaY>0?.82:1.22;JULIA.zoom*=f;JULIA.draw()};JULIA.draw()},
+    draw(){const W=pgc.width,H=pgc.height,img=ctx.createImageData(W,H),d=img.data,cr=JULIA.cr,ci2=JULIA.ci;for(let py=0;py<H;py++)for(let px=0;px<W;px++){const ci=(py*W+px)*4;let zx=(px-W/2)/JULIA.zoom+JULIA.cx,zy=(py-H/2)/JULIA.zoom+JULIA.cy,n=0;while(zx*zx+zy*zy<4&&n<JULIA.iter){const t=zx*zx-zy*zy+cr;zy=2*zx*zy+ci2;zx=t;n++}if(n===JULIA.iter){d[ci]=0;d[ci+1]=0;d[ci+2]=0;d[ci+3]=255}else{const t=n/JULIA.iter;d[ci]=Math.floor(Math.sin(t*Math.PI*5)*127+64);d[ci+1]=Math.floor(t*30);d[ci+2]=Math.floor(Math.sin(t*Math.PI*3+1)*127+128);d[ci+3]=255}}ctx.putImageData(img,0,0);const g=ctx.createRadialGradient(W/2,H/2,H*.15,W/2,H/2,H*.65);g.addColorStop(0,'transparent');g.addColorStop(1,'rgba(3,3,10,.55)');ctx.fillStyle=g;ctx.fillRect(0,0,W,H)}
+  };
+  const FR={n:5,wave:'square',t:0,trail:[],
+    init(){pghint.textContent='watch harmonics build a waveform';pgctrl.innerHTML=`<label class="pgcl">Harmonics</label><input type="range" class="pgsl" id="frn" min="1" max="40" value="5"><button class="pgbtn" id="frsq">Square</button><button class="pgbtn" id="frsaw">Sawtooth</button><button class="pgbtn" id="frtri">Triangle</button>`;document.getElementById('frn').oninput=e=>{FR.n=+e.target.value;FR.trail=[]};document.getElementById('frsq').onclick=()=>{FR.wave='square';FR.trail=[]};document.getElementById('frsaw').onclick=()=>{FR.wave='sawtooth';FR.trail=[]};document.getElementById('frtri').onclick=()=>{FR.wave='triangle';FR.trail=[]};FR.trail=[];FR.t=0;(function loop(){animId=requestAnimationFrame(loop);FR.draw()})()},
+    draw(){const W=pgc.width,H=pgc.height,cx=W*.28,cy=H*.5;ctx.fillStyle='rgba(3,3,10,.18)';ctx.fillRect(0,0,W,H);let x=cx,y=cy;for(let i=0;i<FR.n;i++){let k,amp;if(FR.wave==='square'){k=2*i+1;amp=1/k*(H*.32)}else if(FR.wave==='sawtooth'){k=i+1;amp=1/k*(H*.28)}else{k=2*i+1;amp=Math.pow(-1,i)/k/k*(H*.38)}const a=k*FR.t,nx=x+amp*Math.cos(a),ny=y+amp*Math.sin(a);ctx.beginPath();ctx.arc(x,y,Math.abs(amp),0,Math.PI*2);ctx.strokeStyle=`rgba(168,85,247,${.1-i*.003})`;ctx.lineWidth=.8;ctx.stroke();ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(nx,ny);ctx.strokeStyle=`rgba(192,132,252,${.65-i*.05})`;ctx.lineWidth=1.5;ctx.stroke();ctx.beginPath();ctx.arc(nx,ny,2,0,Math.PI*2);ctx.fillStyle='rgba(192,132,252,.8)';ctx.fill();x=nx;y=ny}FR.trail.unshift(y);if(FR.trail.length>W*.52)FR.trail.pop();const tx=W*.45;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(tx,FR.trail[0]);ctx.strokeStyle='rgba(168,85,247,.35)';ctx.lineWidth=1;ctx.stroke();ctx.beginPath();FR.trail.forEach((ty,i)=>{if(i===0)ctx.moveTo(tx+i,ty);else ctx.lineTo(tx+i,ty)});ctx.strokeStyle='rgba(168,85,247,.8)';ctx.lineWidth=1.5;ctx.stroke();ctx.beginPath();ctx.arc(tx,FR.trail[0],4,0,Math.PI*2);ctx.fillStyle='rgba(192,132,252,.9)';ctx.fill();FR.t+=.028}
+  };
+  const UL={init(){pghint.textContent='primes form unexpected diagonals';pgctrl.innerHTML=`<label class="pgcl">Size</label><input type="range" class="pgsl" id="ulsz" min="30" max="150" value="80"><button class="pgbtn" id="uldr">Redraw</button>`;document.getElementById('ulsz').oninput=()=>UL.draw();document.getElementById('uldr').onclick=()=>UL.draw();UL.draw()},isPrime(n){if(n<2)return false;for(let i=2;i<=Math.sqrt(n);i++)if(n%i===0)return false;return true},draw(){const sz=+document.getElementById('ulsz').value,W=pgc.width,H=pgc.height,cell=Math.min(W,H)/sz;ctx.fillStyle='#03030a';ctx.fillRect(0,0,W,H);const cx=Math.floor(W/2/cell)*cell,cy=Math.floor(H/2/cell)*cell;let x=0,y=0,n=1,step=1,dir=0;const dirs=[[1,0],[0,-1],[-1,0],[0,1]],max=sz*sz;while(n<=max){for(let leg=0;leg<2;leg++){for(let i=0;i<step;i++){if(n>max)break;if(UL.isPrime(n)){ctx.fillStyle=`rgba(168,85,247,${.5+(n/max)*.4})`;ctx.shadowBlur=cell>5?4:1;ctx.shadowColor='rgba(168,85,247,.45)';ctx.fillRect(cx+x*cell,cy+y*cell,Math.max(cell-.5,1),Math.max(cell-.5,1));ctx.shadowBlur=0}x+=dirs[dir][0];y+=dirs[dir][1];n++}dir=(dir+1)%4}step++}}};
+  const LORENZ={t:0,pts:[],x:1,y:0,z:0,sigma:10,rho:28,beta:8/3,
+    init(){pghint.textContent='chaotic beauty — the butterfly effect';pgctrl.innerHTML=`<label class="pgcl">ρ (Rho)</label><input type="range" class="pgsl" id="lrho" min="10" max="40" value="28"><button class="pgbtn" id="lrst">Reset</button>`;document.getElementById('lrho').oninput=e=>{LORENZ.rho=+e.target.value;LORENZ.reset()};document.getElementById('lrst').onclick=()=>LORENZ.reset();LORENZ.reset();(function loop(){animId=requestAnimationFrame(loop);LORENZ.draw()})()},
+    reset(){LORENZ.x=1+Math.random()*.01;LORENZ.y=0;LORENZ.z=0;LORENZ.pts=[]},
+    draw(){const W=pgc.width,H=pgc.height;ctx.fillStyle='rgba(3,3,10,.08)';ctx.fillRect(0,0,W,H);const dt=.006;for(let i=0;i<3;i++){const dx=LORENZ.sigma*(LORENZ.y-LORENZ.x)*dt,dy=(LORENZ.x*(LORENZ.rho-LORENZ.z)-LORENZ.y)*dt,dz=(LORENZ.x*LORENZ.y-LORENZ.beta*LORENZ.z)*dt;LORENZ.x+=dx;LORENZ.y+=dy;LORENZ.z+=dz;LORENZ.pts.push({x:LORENZ.x,y:LORENZ.y,z:LORENZ.z})}if(LORENZ.pts.length>4000)LORENZ.pts=LORENZ.pts.slice(-4000);const scale=W/60,ox=W/2,oy=H/2;ctx.beginPath();LORENZ.pts.forEach((p,i)=>{const sx=p.x*scale+ox,sy=-p.z*scale*0.7+oy;const t=i/LORENZ.pts.length;ctx.strokeStyle=`hsla(${270+t*40},80%,70%,${t*.6})`;ctx.lineWidth=.8;if(i===0)ctx.moveTo(sx,sy);else ctx.lineTo(sx,sy)});ctx.stroke();LORENZ.t+=dt}
+  };
+  const TABS={mb:MB,julia:JULIA,fr:FR,ul:UL,lorenz:LORENZ};
+  window.addEventListener('load',()=>{resize();setTimeout(()=>MB.init(),300)});
+  window.addEventListener('resize',()=>{stop();resize();pgctrl.innerHTML='';setTimeout(()=>TABS[cur].init(),100)},{passive:true});
+})();
+</script>
+</body>
+</html>

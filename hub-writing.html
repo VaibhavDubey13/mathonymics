@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>∂ Long-form Writing — Mathonymics</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{--black:#000;--bg:#03030a;--bg2:#07070f;--s1:rgba(255,255,255,.03);--border:rgba(255,255,255,.07);--borderp:rgba(168,85,247,.25);--p1:#7e22ce;--p2:#a855f7;--p3:#c084fc;--pg:rgba(168,85,247,.12);--text:#f0eeff;--text2:rgba(240,238,255,.55);--text3:rgba(240,238,255,.25);--mono:'Fira Code',monospace;--disp:'Syne',sans-serif;--ease:cubic-bezier(.16,1,.3,1)}
+body{background:var(--black);color:var(--text);font-family:var(--mono);font-size:13px;line-height:1.75;overflow-x:hidden;cursor:none}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--p1);border-radius:2px}
+#ac{position:fixed;inset:0;z-index:0;pointer-events:none}
+.vig{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 80% 80% at 50% 50%,transparent 45%,rgba(0,0,0,.75) 100%)}
+#pb{position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,var(--p1),var(--p3),#e879f9);z-index:9999;box-shadow:0 0 10px var(--p2)}
+#cdot{position:fixed;width:6px;height:6px;background:var(--p3);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);box-shadow:0 0 8px var(--p2),0 0 20px rgba(168,85,247,.4);transition:width .15s,height .15s}
+#cr{position:fixed;width:28px;height:28px;border:1px solid rgba(168,85,247,.35);border-radius:50%;pointer-events:none;z-index:9997;transform:translate(-50%,-50%)}
+#cr::before,#cr::after{content:'';position:absolute;background:rgba(168,85,247,.3)}
+#cr::before{width:1px;height:6px;left:50%;top:-10px;transform:translateX(-50%)}
+#cr::after{width:6px;height:1px;top:50%;left:-10px;transform:translateY(-50%)}
+body.ch #cdot{width:12px;height:12px}body.ch #cr{width:48px;height:48px;border-color:rgba(168,85,247,.6)}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:.018;pointer-events:none;z-index:998}
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:0 48px;height:62px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:rgba(0,0,0,.55);backdrop-filter:blur(28px)}
+.nl{font-family:var(--disp);font-weight:800;font-size:15px;letter-spacing:-.04em;color:var(--text);text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.nldot{width:5px;height:5px;background:var(--p2);border-radius:50%;box-shadow:0 0 8px var(--p2)}
+.nav-right{display:flex;gap:12px;align-items:center}
+.nav-back{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--text2);border:1px solid var(--border);padding:5px 12px;border-radius:100px;text-decoration:none;transition:all .25s}
+.nav-back:hover{border-color:var(--borderp);color:var(--p3)}
+.hub-badge{font-size:12px;color:var(--p3);background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.2);padding:4px 14px;border-radius:100px;letter-spacing:.08em}
+.hub-hero{position:relative;z-index:2;min-height:52vh;display:flex;align-items:center;padding:120px 48px 60px;max-width:1100px;margin:0 auto}
+.hub-sym{font-size:clamp(80px,14vw,160px);color:rgba(168,85,247,.07);position:absolute;right:48px;top:50%;transform:translateY(-50%);line-height:1;pointer-events:none}
+.hub-eyebrow{font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--p2);margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.hub-eyebrow::before{content:'';width:24px;height:1px;background:var(--p2)}
+.hub-title{font-family:var(--disp);font-weight:800;font-size:clamp(42px,7vw,80px);line-height:.97;letter-spacing:-.045em;margin-bottom:20px}
+.hub-title span{background:linear-gradient(125deg,#c084fc 0%,#a855f7 45%,#6d28d9 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hub-desc{font-size:14px;color:var(--text2);max-width:520px;line-height:1.85}
+.dline{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)}
+.sw{position:relative;z-index:2;max-width:1100px;margin:0 auto;padding:72px 48px}
+.sl{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--p2);margin-bottom:12px;display:flex;align-items:center;gap:9px}
+.sl::before{content:'';display:inline-block;width:18px;height:1px;background:var(--p2)}
+.st{font-family:var(--disp);font-weight:800;font-size:clamp(24px,3.5vw,38px);letter-spacing:-.04em;line-height:1.1;margin-bottom:36px}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px}
+.card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:28px;position:relative;overflow:hidden;transition:all .3s var(--ease);cursor:none;text-decoration:none;color:inherit;display:block}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(168,85,247,.4),transparent);opacity:0;transition:opacity .3s}
+.card:hover{border-color:rgba(168,85,247,.2);background:rgba(168,85,247,.025);transform:translateY(-3px);box-shadow:0 10px 32px rgba(0,0,0,.5)}
+.card:hover::before{opacity:1}
+.card-tag{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--p2);margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.ctag-dot{width:4px;height:4px;background:var(--p2);border-radius:50%;box-shadow:0 0 4px var(--p2)}
+.card-title{font-family:var(--disp);font-weight:700;font-size:18px;color:var(--text);letter-spacing:-.02em;margin-bottom:10px;line-height:1.3}
+.card-body{font-size:12px;color:var(--text2);line-height:1.85}
+.card-link{display:inline-flex;align-items:center;gap:6px;margin-top:18px;font-size:11px;color:var(--p2);transition:gap .2s,color .2s}
+.card:hover .card-link{gap:10px;color:var(--p3)}
+.hub-footer{position:relative;z-index:2;border-top:1px solid var(--border);padding:28px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;background:rgba(0,0,0,.4)}
+.hfl{font-family:var(--disp);font-weight:800;font-size:13px;letter-spacing:-.03em;color:var(--text3)}
+.hfl a{color:inherit;text-decoration:none;transition:color .2s}.hfl a:hover{color:var(--p3)}
+@keyframes rup{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+.rev{opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease),transform .8s var(--ease)}.rev.vis{opacity:1;transform:translateY(0)}
+@media(max-width:900px){nav{padding:0 20px}.hub-hero{padding:100px 20px 48px}.sw{padding:52px 20px}.hub-footer{padding:24px 20px}}
+@media(max-width:600px){.card-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<canvas id="ac"></canvas>
+<div class="vig"></div>
+<div id="pb"></div>
+<div id="cdot"></div>
+<div id="cr"></div>
+<nav>
+  <a href="index.html" class="nl"><div class="nldot"></div>Mathonymics</a>
+  <div class="nav-right">
+    <span class="hub-badge">∂ Writing</span>
+    <a href="index.html" class="nav-back">← Back home</a>
+  </div>
+</nav>
+<div class="hub-hero">
+  <div class="hub-sym">∂</div>
+  <div>
+    <div class="hub-eyebrow">Dimension 03</div>
+    <h1 class="hub-title"><span>Long-form Writing</span></h1>
+    <p class="hub-desc">Essays, threads, and deep dives. Mathematics explained as ideas, not procedures. Equations only when they add beauty.</p>
+  </div>
+</div>
+<div class="dline"></div>
+<div class="sw">
+    <div class="sl rev">Archive</div>
+    <h2 class="st rev">Written work</h2>
+    <div class="card-grid">
+      <a href="https://medium.com/@mathonymics" target="_blank" rel="noopener" class="card rev">
+        <div class="card-tag"><div class="ctag-dot"></div>Medium · Philosophy</div>
+        <h3 class="card-title">What Mathematics Actually Is</h3>
+        <p class="card-body">We teach arithmetic and call it mathematics. Counting isn't math. Reasoning is math. The real subject is almost no one has seen — and it's beautiful.</p>
+        <span class="card-link">Read on Medium ↗</span>
+      </a>
+      <a href="https://medium.com/@mathonymics" target="_blank" rel="noopener" class="card rev">
+        <div class="card-tag"><div class="ctag-dot"></div>Medium · Symmetry</div>
+        <h3 class="card-title">Why Beauty Feels Like Truth</h3>
+        <p class="card-body">Noether's theorem says conservation of energy is a consequence of time symmetry. Aesthetics and physics emerge from the same source. That's not metaphor — it's mathematics.</p>
+        <span class="card-link">Read on Medium ↗</span>
+      </a>
+      <a href="https://x.com/Mathonymics" target="_blank" rel="noopener" class="card rev">
+        <div class="card-tag"><div class="ctag-dot"></div>X · Thread</div>
+        <h3 class="card-title">Patterns Are the Universe's Language</h3>
+        <p class="card-body">Most people think math is about numbers. It's actually about patterns. Every game mechanic, every algorithm, every beautiful coincidence traces back to structure.</p>
+        <span class="card-link">Read on X ↗</span>
+      </a>
+      <a href="https://www.threads.com/@mathonymics" target="_blank" rel="noopener" class="card rev">
+        <div class="card-tag"><div class="ctag-dot"></div>Threads · Education</div>
+        <h3 class="card-title">The Arithmetic Mistake</h3>
+        <p class="card-body">Schools focus on calculation. Real mathematics is about proof, structure, and logical necessity. A culture that mistakes arithmetic for math produces people afraid of mathematics.</p>
+        <span class="card-link">Read on Threads ↗</span>
+      </a>
+      <a href="https://medium.com/@mathonymics" target="_blank" rel="noopener" class="card rev">
+        <div class="card-tag"><div class="ctag-dot"></div>Medium · Infinity</div>
+        <h3 class="card-title">Infinity Is Not a Number</h3>
+        <p class="card-body">Cantor showed some infinities are larger than others. The continuum hypothesis is independent of ZFC. Mathematics can reach beyond what it can prove.</p>
+        <span class="card-link">Read on Medium ↗</span>
+      </a>
+      <a href="https://www.youtube.com/@mathonymics/featured" target="_blank" rel="noopener" class="card rev">
+        <div class="card-tag"><div class="ctag-dot"></div>YouTube · Explained</div>
+        <h3 class="card-title">The Mandelbrot Set: A Visual Essay</h3>
+        <p class="card-body">Why a simple equation z → z² + c generates infinite complexity. The boundary between order and chaos is where all interesting things happen.</p>
+        <span class="card-link">Watch on YouTube ↗</span>
+      </a>
+    </div></div>
+<div class="hub-footer">
+  <span class="hfl"><a href="index.html">Mathonymics</a> / ∂ Long-form Writing</span>
+  <a href="hub-opensource.html" style="font-size:10px;color:var(--text3);text-decoration:none" onmouseenter="this.style.color='var(--p3)'" onmouseleave="this.style.color='var(--text3)'">∞ Next dimension →</a>
+</div>
+<script>
+(()=>{const cv=document.getElementById('ac'),ctx=cv.getContext('2d'),SYMS=['∂','∫','∑','∞','π','Δ','√','∀'];let W,H,syms=[],mouse={x:0,y:0},t=0;function resize(){W=cv.width=innerWidth;H=cv.height=innerHeight}function Sym(){this.x=Math.random()*W;this.y=Math.random()*H;this.char=SYMS[Math.floor(Math.random()*SYMS.length)];this.sz=Math.random()*10+8;this.ba=Math.random()*.06+.02;this.a=this.ba;this.vx=(Math.random()-.5)*.15;this.vy=(Math.random()-.5)*.15;this.depth=Math.random()*.8+.2;this.pp=Math.random()*Math.PI*2;this.hue=270+Math.random()*35}function init(){syms=[];const n=Math.min(Math.floor(W*H/15000),80);for(let i=0;i<n;i++)syms.push(new Sym())}function loop(){requestAnimationFrame(loop);ctx.clearRect(0,0,W,H);t+=.01;syms.forEach(s=>{const px=(mouse.x-W/2)*s.depth*.01,py=(mouse.y-H/2)*s.depth*.01;s.x+=s.vx;s.y+=s.vy;s.a=s.ba*(.7+.3*Math.sin(t*s.pp*10));if(s.x<-40)s.x=W+20;if(s.x>W+40)s.x=-20;if(s.y<-40)s.y=H+20;if(s.y>H+40)s.y=-20;ctx.save();ctx.globalAlpha=s.a;ctx.fillStyle=`hsl(${s.hue},70%,70%)`;ctx.font=`${s.sz}px 'Fira Code',monospace`;ctx.fillText(s.char,s.x+px,s.y+py);ctx.restore()})}window.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY},{passive:true});window.addEventListener('resize',()=>{resize();init()},{passive:true});resize();init();loop()})();
+(()=>{const dot=document.getElementById('cdot'),ring=document.getElementById('cr');let mx=0,my=0,rx=0,ry=0;document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY},{passive:true});(function a(){dot.style.left=mx+'px';dot.style.top=my+'px';rx+=(mx-rx)*.13;ry+=(my-ry)*.13;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a)})();document.querySelectorAll('a,button,.card').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('ch'));el.addEventListener('mouseleave',()=>document.body.classList.remove('ch'))})})();
+const pb=document.getElementById('pb');window.addEventListener('scroll',()=>{pb.style.width=(window.scrollY/(document.documentElement.scrollHeight-innerHeight)*100)+'%'},{passive:true});
+const ro=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('vis');const kids=x.target.querySelectorAll('.card');kids.forEach((c,i)=>{c.style.cssText=`opacity:0;transform:translateY(16px);transition:opacity .7s ${i*.09}s cubic-bezier(.16,1,.3,1),transform .7s ${i*.09}s cubic-bezier(.16,1,.3,1)`;requestAnimationFrame(()=>{c.style.opacity='1';c.style.transform='translateY(0)'})});ro.unobserve(x.target)}})},{threshold:.07});
+document.querySelectorAll('.rev,.card-grid').forEach(el=>ro.observe(el));
+</script>
+</body>
+</html>
