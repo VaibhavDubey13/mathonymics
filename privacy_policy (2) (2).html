@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FocusShield — Privacy Policy</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #1a1a2e;
+    background: #f9f9fc;
+    padding: 0;
+  }
+
+  .wrapper {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 60px 32px 80px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+
+  .brand-icon {
+    width: 40px; height: 40px;
+    background: linear-gradient(135deg, #6D28D9, #A78BFA);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .brand-icon svg { width: 22px; height: 22px; }
+
+  .brand-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: #6D28D9;
+    letter-spacing: -0.3px;
+  }
+
+  h1 {
+    font-size: 32px;
+    font-weight: 800;
+    color: #0f0e1a;
+    letter-spacing: -0.8px;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: #6b6882;
+    margin-bottom: 48px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid #e5e3f0;
+  }
+
+  h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-top: 40px;
+    margin-bottom: 12px;
+    padding-left: 14px;
+    border-left: 3px solid #7C3AED;
+  }
+
+  p { margin-bottom: 14px; color: #3a3756; }
+
+  ul {
+    margin: 0 0 14px 0;
+    padding-left: 22px;
+    color: #3a3756;
+  }
+
+  ul li { margin-bottom: 6px; }
+
+  a { color: #7C3AED; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .highlight-box {
+    background: #f3f0ff;
+    border: 1px solid #d8d0fa;
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin: 24px 0;
+    font-size: 15px;
+    color: #4c3999;
+  }
+
+  .highlight-box strong { color: #5B21B6; }
+
+  .footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid #e5e3f0;
+    font-size: 13px;
+    color: #9896b4;
+  }
+
+  @media (max-width: 600px) {
+    .wrapper { padding: 32px 20px 48px; }
+    h1 { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="brand">
+    <div class="brand-icon">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M12 2L3 6.5V12c0 5.5 3.8 10.7 9 12 5.2-1.3 9-6.5 9-12V6.5L12 2z"
+          fill="white" opacity="0.25"/>
+        <path d="M12 2L3 6.5V12c0 5.5 3.8 10.7 9 12 5.2-1.3 9-6.5 9-12V6.5L12 2z"
+          stroke="white" stroke-width="1.5" fill="none"/>
+        <path d="M8.5 12l2.5 2.5 5-5" stroke="white" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="brand-name">FocusShield</div>
+  </div>
+
+  <h1>Privacy Policy</h1>
+  <p class="subtitle">
+    Last updated: February 2026 &nbsp;·&nbsp;
+    Developer: Vaibhav Dubey &nbsp;·&nbsp;
+    Contact: <a href="mailto:mevaibhavdubey@zohomail.com">mevaibhavdubey@zohomail.com</a>
+  </p>
+
+  <div class="highlight-box">
+    <strong>The short version:</strong> FocusShield does not collect, transmit, or sell any personal data.
+    All your settings live entirely on your own device. The only external call the extension makes
+    is to verify a Gumroad license key — and only when you explicitly enter one.
+  </div>
+
+  <h2>1. Who We Are</h2>
+  <p>
+    FocusShield is a Chrome browser extension developed by Vaibhav Dubey ("we", "our", or "us").
+    It helps users block distracting websites to stay productive. This Privacy Policy explains
+    what data the extension handles and how.
+  </p>
+
+  <h2>2. Data We Store Locally on Your Device</h2>
+  <p>
+    FocusShield stores the following data using Chrome's built-in
+    <code>chrome.storage</code> API, which saves data locally on your device and,
+    if you are signed into Chrome, may sync it across your own devices via your Google account:
+  </p>
+  <ul>
+    <li><strong>Blocked site list</strong> — the domains you have chosen to block, along with their schedule settings and Hard Mode status.</li>
+    <li><strong>Extension settings</strong> — global on/off state, schedule preferences, and Hard Mode configuration.</li>
+    <li><strong>Usage statistics</strong> — locally computed counters for how many times sites were blocked and attempts were made. These are never transmitted.</li>
+    <li><strong>Streak and focus data</strong> — locally computed productivity streak information (Premium feature).</li>
+    <li><strong>License key</strong> — if you activate a Premium or Lifetime subscription, your Gumroad license key and the timestamp of the last verification check are stored locally. This key is used only to verify your subscription status with Gumroad and is never shared with any third party other than Gumroad.</li>
+  </ul>
+  <p>
+    This data never leaves your device except as described in Section 3 below.
+    We have no servers, no database, and no way to access it.
+  </p>
+
+  <h2>3. The Only External Network Request</h2>
+  <p>
+    The extension makes <strong>one type of external network request</strong>:
+    a license key verification call to Gumroad's API
+    (<code>https://api.gumroad.com/v2/licenses/verify</code>).
+  </p>
+  <p>This request is made only when:</p>
+  <ul>
+    <li>You manually enter a license key and click "Activate", or</li>
+    <li>The extension performs a background re-verification of a previously stored key
+        (at most once every 12 hours) to check whether your subscription is still active.</li>
+  </ul>
+  <p>
+    The request sends your license key and a Gumroad product ID to Gumroad's servers to
+    confirm the subscription is valid and not refunded or cancelled.
+    Gumroad's own <a href="https://gumroad.com/privacy" target="_blank" rel="noopener">Privacy Policy</a>
+    governs how Gumroad handles this data.
+  </p>
+  <p>
+    No other external requests are ever made. The extension does not contact any analytics
+    service, advertising network, crash-reporting service, or any server operated by us.
+  </p>
+
+  <h2>4. Browsing Data and Tab URLs</h2>
+  <p>
+    FocusShield uses the <code>webNavigation</code> and <code>tabs</code> Chrome permissions
+    to intercept navigation events and check whether a URL matches your blocked-sites list.
+    This check happens <strong>entirely within your browser</strong> using in-memory JavaScript comparison.
+    URLs are never logged, stored, or transmitted anywhere — not to us, not to any third party.
+  </p>
+
+  <h2>5. No Advertising, No Analytics, No Tracking</h2>
+  <p>
+    We do not use any advertising networks, analytics platforms (such as Google Analytics),
+    or user-tracking tools of any kind. We have no way of knowing who is using the extension,
+    how often, or which sites they block.
+  </p>
+
+  <h2>6. Data Sharing and Third Parties</h2>
+  <p>
+    We do not sell, trade, rent, or share your personal data with any third party.
+    The only third-party involvement is Gumroad (for license verification as described above).
+  </p>
+
+  <h2>7. Children's Privacy</h2>
+  <p>
+    FocusShield is not directed at children under the age of 13. We do not knowingly
+    collect any information from children. If you believe a child has provided personal
+    information through the extension, please contact us and we will address the situation promptly.
+  </p>
+
+  <h2>8. Data Security</h2>
+  <p>
+    Since all data is stored locally using Chrome's built-in storage APIs,
+    its security is governed by Chrome's own sandboxing and your device's security model.
+    License keys stored in <code>chrome.storage.sync</code> are encrypted in transit by Chrome
+    when syncing across devices.
+  </p>
+
+  <h2>9. Your Rights and Choices</h2>
+  <p>You have full control over all data the extension stores:</p>
+  <ul>
+    <li><strong>Delete all extension data</strong> — go to <em>chrome://extensions</em>, find FocusShield, click "Details", then "Clear data".</li>
+    <li><strong>Sign out of Premium</strong> — use the "Sign out" button in the Account tab. This removes your license key from storage.</li>
+    <li><strong>Uninstall</strong> — removing the extension from Chrome automatically deletes all locally stored data.</li>
+  </ul>
+
+  <h2>10. Changes to This Policy</h2>
+  <p>
+    If we materially change this privacy policy, we will update the "Last updated" date at
+    the top of this page. We encourage you to review this page periodically.
+    Continued use of the extension after changes constitutes acceptance of the updated policy.
+  </p>
+
+  <h2>11. Contact</h2>
+  <p>
+    If you have any questions, concerns, or requests related to this privacy policy,
+    please contact us at:
+    <br><br>
+    <strong>Vaibhav Dubey</strong><br>
+    Email: <a href="mailto:mevaibhavdubey@zohomail.com">mevaibhavdubey@zohomail.com</a>
+  </p>
+
+  <div class="footer">
+    © 2025 FocusShield by Vaibhav Dubey. All rights reserved.
+  </div>
+
+</div>
+</body>
+</html>
